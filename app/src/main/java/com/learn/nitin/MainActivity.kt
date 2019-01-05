@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
       listView = findViewById<ListView>(R.id.recipe_list_view)
 
+    /*
       var recipeList = Recipe.getRecipesFromFile("recipes.json",this)
 
 
@@ -38,6 +39,13 @@ class MainActivity : AppCompatActivity() {
 
 
       listView.adapter = adapter
+      */
+
+    var recipeList = Recipe.getRecipesFromFile("recipes.json",this)
+
+    val adapter = RecipeAdapter(this,recipeList)
+
+    listView.adapter = adapter
 
   }
 
