@@ -1,6 +1,9 @@
 package com.learn.nitin
 
 import android.content.Context
+import android.content.res.Resources
+import android.support.v4.content.ContextCompat
+import android.support.v4.content.res.ResourcesCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,17 @@ import com.squareup.picasso.Picasso
 
 class RecipeAdapter(private val context: Context,
                     private val dataSource: ArrayList<Recipe>) : BaseAdapter() {
+
+    companion object {
+        private val LABEL_COLOR = hashMapOf<String,Int>(
+                "Low-Carb" to R.color.colorLowCarb,
+                "Balanced" to R.color.colorBalanced,
+                "Medium-Carb" to R.color.colorMediumCarb,
+                "Low-Fat" to R.color.colorLowFat,
+                "Vegetarian" to R.color.colorVegetarian,
+                "Low-Sodium" to R.color.colorLowSodium
+        )
+    }
 
     private val inflater: LayoutInflater
             = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
@@ -48,6 +62,16 @@ class RecipeAdapter(private val context: Context,
 // Get thumbnail element
         val thumbnailImageView = rowView.findViewById(R.id.recipe_list_thumbnail) as ImageView
 
+        val titleTypeFace = ResourcesCompat.getFont(context, R.font.josefinsans_bold)
+        titleTextView.typeface = titleTypeFace
+
+        val subtitleTypeFace = ResourcesCompat.getFont(context, R.font.josefinsans_semibolditalic)
+        subtitleTextView.typeface = subtitleTypeFace
+
+        val detailTypeFace = ResourcesCompat.getFont(context, R.font.quicksand_bold)
+        detailTextView.typeface = detailTypeFace
+
+
         // 1
         val recipe = getItem(position) as Recipe
 
@@ -55,6 +79,8 @@ class RecipeAdapter(private val context: Context,
         titleTextView.text = recipe.title
         subtitleTextView.text = recipe.description
         detailTextView.text = recipe.label
+
+        detailTextView.setTextColor(ContextCompat.getColor(context, LABEL_COLOR[recipe.label] ?: R.color.colorPrimary));
 
 // 3
         Picasso.with(context).load(recipe.imageUrl).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView)
