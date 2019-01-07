@@ -11,6 +11,7 @@ import android.os.Environment
 import java.io.File.separator
 import android.os.Environment.getExternalStorageDirectory
 import android.util.Log
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
 
@@ -46,6 +47,19 @@ class MainActivity : AppCompatActivity() {
     val adapter = RecipeAdapter(this,recipeList)
 
     listView.adapter = adapter
+
+      val context = this
+
+      listView.setOnItemClickListener { _, _, position, _ ->
+          // 1
+          val selectedRecipe = recipeList[position]
+
+          // 2
+          val detailIntent = RecipeDetailActivity.newIntent(context, selectedRecipe)
+
+          // 3
+          startActivity(detailIntent)
+      }
 
   }
 
