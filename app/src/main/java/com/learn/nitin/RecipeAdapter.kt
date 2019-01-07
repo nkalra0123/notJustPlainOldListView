@@ -48,32 +48,53 @@ class RecipeAdapter(private val context: Context,
      * @return A View corresponding to the data at the specified position.
      */
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val rowView = inflater.inflate(R.layout.list_item_recipe,parent,false)
 
-        // Get title element
-        val titleTextView = rowView.findViewById(R.id.recipe_list_title) as TextView
+        val view : View
+        val holder : ViewHolder
+
+        if(convertView == null) {
+             view = inflater.inflate(R.layout.list_item_recipe,parent,false)
+
+            holder = ViewHolder()
+
+            // Get title element
+             holder.titleTextView = view.findViewById(R.id.recipe_list_title) as TextView
 
 // Get subtitle element
-        val subtitleTextView = rowView.findViewById(R.id.recipe_list_subtitle) as TextView
+             holder.subtitleTextView = view.findViewById(R.id.recipe_list_subtitle) as TextView
 
 // Get detail element
-        val detailTextView = rowView.findViewById(R.id.recipe_list_detail) as TextView
+             holder.detailTextView = view.findViewById(R.id.recipe_list_detail) as TextView
 
 // Get thumbnail element
-        val thumbnailImageView = rowView.findViewById(R.id.recipe_list_thumbnail) as ImageView
+             holder.thumbnailImageView = view.findViewById(R.id.recipe_list_thumbnail) as ImageView
 
-        val titleTypeFace = ResourcesCompat.getFont(context, R.font.josefinsans_bold)
-        titleTextView.typeface = titleTypeFace
+            val titleTypeFace = ResourcesCompat.getFont(context, R.font.josefinsans_bold)
+            holder.titleTextView.typeface = titleTypeFace
 
-        val subtitleTypeFace = ResourcesCompat.getFont(context, R.font.josefinsans_semibolditalic)
-        subtitleTextView.typeface = subtitleTypeFace
+            val subtitleTypeFace = ResourcesCompat.getFont(context, R.font.josefinsans_semibolditalic)
+            holder.subtitleTextView.typeface = subtitleTypeFace
 
-        val detailTypeFace = ResourcesCompat.getFont(context, R.font.quicksand_bold)
-        detailTextView.typeface = detailTypeFace
+            val detailTypeFace = ResourcesCompat.getFont(context, R.font.quicksand_bold)
+            holder.detailTextView.typeface = detailTypeFace
+
+            view.tag = holder
+
+        }
+        else
+        {
+            view = convertView
+            holder = convertView.tag as ViewHolder
+        }
 
 
         // 1
         val recipe = getItem(position) as Recipe
+
+        val titleTextView  = holder.titleTextView
+        val subtitleTextView  = holder.subtitleTextView
+        val detailTextView = holder.detailTextView
+        val thumbnailImageView = holder.thumbnailImageView
 
 // 2
         titleTextView.text = recipe.title
@@ -86,8 +107,17 @@ class RecipeAdapter(private val context: Context,
         Picasso.with(context).load(recipe.imageUrl).placeholder(R.mipmap.ic_launcher).into(thumbnailImageView)
 
 
-        return rowView
+        return view
     }
+
+    private class ViewHolder {
+        lateinit var titleTextView: TextView
+        lateinit var subtitleTextView: TextView
+        lateinit var detailTextView: TextView
+        lateinit var thumbnailImageView: ImageView
+    }
+
+
 
     /**
      * Get the data item associated with the specified position in the data set.
