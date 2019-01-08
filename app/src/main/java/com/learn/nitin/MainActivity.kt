@@ -10,7 +10,10 @@ import android.net.Uri
 import android.os.Environment
 import java.io.File.separator
 import android.os.Environment.getExternalStorageDirectory
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
+import android.widget.LinearLayout
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 
@@ -19,12 +22,16 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var listView : ListView
 
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager : RecyclerView.LayoutManager
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_main)
+    setContentView(R.layout.recyclerview)
       Log.d("nitin","in onc create");
 
-      listView = findViewById<ListView>(R.id.recipe_list_view)
+     // listView = findViewById<ListView>(R.id.recipe_list_view)
 
     /*
       var recipeList = Recipe.getRecipesFromFile("recipes.json",this)
@@ -44,12 +51,13 @@ class MainActivity : AppCompatActivity() {
 
     var recipeList = Recipe.getRecipesFromFile("recipes.json",this)
 
-    val adapter = RecipeAdapter(this,recipeList)
+    val myadapter = RecipeAdapter(this,recipeList)
 
-    listView.adapter = adapter
+    //listView.adapter = adapter
 
       val context = this
 
+      /*
       listView.setOnItemClickListener { _, _, position, _ ->
           // 1
           val selectedRecipe = recipeList[position]
@@ -59,6 +67,19 @@ class MainActivity : AppCompatActivity() {
 
           // 3
           startActivity(detailIntent)
+      }
+      */
+
+      viewManager = LinearLayoutManager(this)
+      viewAdapter = myadapter
+
+      recyclerView = findViewById(R.id.recyclerview)
+      recyclerView.apply {
+          layoutManager = viewManager
+
+          setHasFixedSize(true)
+          adapter = myadapter
+
       }
 
   }
